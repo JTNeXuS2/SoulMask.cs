@@ -39,7 +39,7 @@ namespace WindowsGSM.Plugins
         public override string StartPath => @"WS\Binaries\Win64\WSServer-Win64-Shipping.exe"; // Game server start path
         public string FullName = "SoulMask Dedicated Server"; // Game server FullName
         public bool AllowsEmbedConsole = true;  // Does this server support output redirect?
-        public int PortIncrements = 0; // This tells WindowsGSM how many ports should skip after installation
+        public int PortIncrements = 4; // This tells WindowsGSM how many ports should skip after installation
         public object QueryMethod = new A2S(); // Query method should be use on current server type. Accepted value: null or new A2S() or new FIVEM() or new UT3()
 
         public static string ConfigServerName = RandomNumberGenerator.Generate12DigitRandomNumber();
@@ -51,12 +51,14 @@ namespace WindowsGSM.Plugins
         public string Port = "20700"; // WGSM reads this as string but originally it is number or int
         public string QueryPort = "20701"; // WGSM reads this as string but originally it is number or int (SteamQueryPort)
         public string EchoPort;
+        public string RconPort;
         public string Additional => GetAdditional();
 
         private string GetAdditional()
         {
             string EchoPort = (int.Parse(_serverData.ServerQueryPort) + 1).ToString();
-            return $" -log -UTF8Output -MultiHome=0.0.0.0 -EchoPort=\"{EchoPort}\" -forcepassthrough -initbackup -saving=600 -backupinterval=900 -adminpsw=adminpass";
+            string RconPort = (int.Parse(_serverData.ServerQueryPort) + 2).ToString();
+            return $" -log -UTF8Output -MultiHome=0.0.0.0 -serverid=0 -rconaddr=0.0.0.0 -rconport=\"{RconPort}\" -EchoPort=\"{EchoPort}\" -forcepassthrough -initbackup -saving=600 -backupinterval=900 -adminpsw=adminpass -rconpsw=rconpass -serverpm=2";
 
         }
 
